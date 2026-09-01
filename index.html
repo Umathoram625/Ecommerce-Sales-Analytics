@@ -1,500 +1,819 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>E-Commerce Sales Analytics Dashboard</title>
+    <title>E-Commerce Sales Analytics Dashboard</title>
 
-<style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body {
-    font-family: Inter, Arial, sans-serif;
-    background: #f5f7fb;
-    color: #172033;
-}
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
 
-header {
-    background: #111827;
-    color: white;
-    padding: 28px 5%;
-}
+        /* ================= HEADER ================= */
 
-header h1 {
-    font-size: 30px;
-    margin-bottom: 6px;
-}
+        header {
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+            padding: 28px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
 
-header p {
-    color: #aeb8c8;
-}
+        .header-content {
+            max-width: 1400px;
+            margin: auto;
+        }
 
-.container {
-    width: 90%;
-    max-width: 1250px;
-    margin: 30px auto;
-}
+        header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
 
-.section-title {
-    font-size: 22px;
-    margin: 35px 0 18px;
-}
+        header p {
+            color: #cbd5e1;
+            font-size: 15px;
+        }
 
-.kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-}
+        /* ================= NAVIGATION ================= */
 
-.kpi {
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 3px 15px rgba(0,0,0,.06);
-}
+        nav {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 100px;
+            z-index: 999;
+        }
 
-.kpi-label {
-    color: #6b7280;
-    font-size: 14px;
-    margin-bottom: 10px;
-}
+        .nav-container {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            overflow-x: auto;
+        }
 
-.kpi-value {
-    font-size: 30px;
-    font-weight: 700;
-}
+        nav button {
+            border: none;
+            background: transparent;
+            padding: 16px 22px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748b;
+            white-space: nowrap;
+        }
 
-.kpi-note {
-    margin-top: 8px;
-    color: #6b7280;
-    font-size: 13px;
-}
+        nav button:hover,
+        nav button.active {
+            color: #111827;
+            border-bottom: 3px solid #111827;
+        }
 
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
+        /* ================= MAIN ================= */
 
-.card {
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 3px 15px rgba(0,0,0,.06);
-}
+        main {
+            max-width: 1400px;
+            margin: auto;
+            padding: 35px 25px 60px;
+        }
 
-.card h3 {
-    margin-bottom: 20px;
-}
+        .page {
+            display: none;
+        }
 
-.bar {
-    margin: 18px 0;
-}
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
 
-.bar-title {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 7px;
-    font-size: 14px;
-}
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
 
-.bar-track {
-    height: 12px;
-    background: #e5e7eb;
-    border-radius: 20px;
-    overflow: hidden;
-}
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.bar-fill {
-    height: 100%;
-    background: #2563eb;
-    border-radius: 20px;
-}
+        .page-title {
+            margin-bottom: 25px;
+        }
 
-.insight-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-}
+        .page-title h2 {
+            font-size: 26px;
+            color: #111827;
+            margin-bottom: 7px;
+        }
 
-.insight {
-    background: white;
-    border-left: 5px solid #2563eb;
-    border-radius: 10px;
-    padding: 22px;
-    box-shadow: 0 3px 15px rgba(0,0,0,.05);
-}
+        .page-title p {
+            color: #64748b;
+        }
 
-.insight h3 {
-    margin-bottom: 8px;
-}
+        /* ================= KPI CARDS ================= */
 
-.insight p {
-    color: #5f6b7a;
-    line-height: 1.6;
-}
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
 
-.impact {
-    margin-top: 25px;
-    background: #111827;
-    color: white;
-    border-radius: 14px;
-    padding: 35px;
-    text-align: center;
-}
+        .kpi {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+        }
 
-.impact-value {
-    font-size: 46px;
-    font-weight: 800;
-    margin: 10px 0;
-}
+        .kpi-label {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
 
-.impact p {
-    color: #b9c2d0;
-}
+        .kpi-value {
+            font-size: 27px;
+            font-weight: 700;
+            color: #111827;
+        }
 
-.tech {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
+        /* ================= INSIGHT CARDS ================= */
 
-.tech span {
-    background: #eef2ff;
-    color: #334155;
-    padding: 9px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-}
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
 
-footer {
-    text-align: center;
-    padding: 35px;
-    color: #6b7280;
-}
+        .insight {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
 
-@media(max-width: 900px) {
-    .kpi-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+        .insight h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
 
-    .dashboard-grid,
-    .insight-grid {
-        grid-template-columns: 1fr;
-    }
-}
+        .insight p {
+            color: #64748b;
+            line-height: 1.6;
+            font-size: 14px;
+        }
 
-@media(max-width: 550px) {
-    .kpi-grid {
-        grid-template-columns: 1fr;
-    }
+        /* ================= CHART GRID ================= */
 
-    header h1 {
-        font-size: 24px;
-    }
-}
-</style>
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            padding: 18px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+        }
+
+        .chart-card.full {
+            grid-column: 1 / -1;
+        }
+
+        .chart-card h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #111827;
+        }
+
+        .chart-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+
+        /* ================= TECHNOLOGY ================= */
+
+        .technology {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            background: #eef2ff;
+            color: #3730a3;
+            padding: 9px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 25px;
+            margin-top: 30px;
+            font-size: 13px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-card.full {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 22px;
+            }
+
+            header h1 {
+                font-size: 23px;
+            }
+
+            main {
+                padding: 25px 15px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .insight-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
+<!-- ================= HEADER ================= -->
+
 <header>
-    <h1>E-Commerce Sales Analytics Dashboard</h1>
-    <p>
-        Business Intelligence | Python | SQL | Power BI | DAX | RFM Analysis
-    </p>
+    <div class="header-content">
+        <h1>E-Commerce Sales Analytics Dashboard</h1>
+        <p>
+            Business Intelligence | Python | SQL | Power BI | DAX | RFM Customer Analytics
+        </p>
+    </div>
 </header>
 
-<div class="container">
 
-    <!-- KPI SECTION -->
-    <h2 class="section-title">Executive Overview</h2>
+<!-- ================= NAVIGATION ================= -->
+
+<nav>
+    <div class="nav-container">
+
+        <button class="nav-btn active" onclick="showPage('overview', this)">
+            Executive Overview
+        </button>
+
+        <button class="nav-btn" onclick="showPage('sales', this)">
+            Sales & Profitability
+        </button>
+
+        <button class="nav-btn" onclick="showPage('products', this)">
+            Products & Categories
+        </button>
+
+        <button class="nav-btn" onclick="showPage('customers', this)">
+            Customers & RFM
+        </button>
+
+        <button class="nav-btn" onclick="showPage('regional', this)">
+            Regional Analysis
+        </button>
+
+    </div>
+</nav>
+
+
+<main>
+
+<!-- ========================================================= -->
+<!-- EXECUTIVE OVERVIEW -->
+<!-- ========================================================= -->
+
+<section id="overview" class="page active">
+
+    <div class="page-title">
+        <h2>Executive Sales Overview</h2>
+        <p>
+            High-level view of e-commerce sales, profitability and customer performance.
+        </p>
+    </div>
+
 
     <div class="kpi-grid">
 
         <div class="kpi">
             <div class="kpi-label">Discount Loss Identified</div>
             <div class="kpi-value">$156.1K</div>
-            <div class="kpi-note">
-                Discounts above 20%
-            </div>
         </div>
 
         <div class="kpi">
             <div class="kpi-label">At-Risk Revenue</div>
             <div class="kpi-value">$445.8K</div>
-            <div class="kpi-note">
-                Customer retention opportunity
-            </div>
         </div>
 
         <div class="kpi">
             <div class="kpi-label">Furniture Loss</div>
             <div class="kpi-value">$21.2K</div>
-            <div class="kpi-note">
-                Tables & Bookcases
-            </div>
         </div>
 
         <div class="kpi">
             <div class="kpi-label">Regional Loss</div>
             <div class="kpi-value">$78.4K</div>
-            <div class="kpi-note">
-                TX, OH, PA, IL & NC
-            </div>
         </div>
 
     </div>
 
 
-    <!-- ANALYTICS -->
-    <h2 class="section-title">Business Analysis</h2>
+    <div class="chart-grid">
 
-    <div class="dashboard-grid">
+        <div class="chart-card full">
+            <h3>Monthly Sales & Profit Trend</h3>
 
-        <div class="card">
-
-            <h3>Financial Opportunity</h3>
-
-            <div class="bar">
-
-                <div class="bar-title">
-                    <span>Discount optimization</span>
-                    <strong>$156.1K</strong>
-                </div>
-
-                <div class="bar-track">
-                    <div class="bar-fill" style="width:100%"></div>
-                </div>
-
-            </div>
-
-            <div class="bar">
-
-                <div class="bar-title">
-                    <span>Customer retention</span>
-                    <strong>$445.8K</strong>
-                </div>
-
-                <div class="bar-track">
-                    <div class="bar-fill" style="width:100%"></div>
-                </div>
-
-            </div>
-
-            <div class="bar">
-
-                <div class="bar-title">
-                    <span>Regional optimization</span>
-                    <strong>$78.4K</strong>
-                </div>
-
-                <div class="bar-track">
-                    <div class="bar-fill" style="width:100%"></div>
-                </div>
-
-            </div>
-
+            <img
+                src="dashboard_images/01_monthly_sales_profit_trend.png"
+                alt="Monthly Sales and Profit Trend">
         </div>
 
 
-        <div class="card">
+        <div class="chart-card">
+            <h3>Category Performance</h3>
 
-            <h3>Customer Analytics</h3>
+            <img
+                src="dashboard_images/02_category_performance.png"
+                alt="Category Performance">
+        </div>
 
-            <p style="color:#5f6b7a; line-height:1.7;">
-                RFM analysis was used to evaluate customer behavior
-                across Recency, Frequency and Monetary value.
-            </p>
 
-            <br>
+        <div class="chart-card">
+            <h3>Regional Performance</h3>
 
-            <div class="tech">
-
-                <span>Recency</span>
-                <span>Frequency</span>
-                <span>Monetary</span>
-                <span>Customer Segmentation</span>
-
-            </div>
-
+            <img
+                src="dashboard_images/04_regional_performance.png"
+                alt="Regional Performance">
         </div>
 
     </div>
 
-
-    <!-- INSIGHTS -->
-    <h2 class="section-title">Key Business Insights</h2>
 
     <div class="insight-grid">
 
         <div class="insight">
-
             <h3>Discount Optimization</h3>
-
             <p>
-                Approximately $156.1K in losses were associated
-                with discounts above 20%. The analysis supports
-                introducing tighter discount controls.
+                Discounting has created a significant profitability opportunity.
+                Optimizing discount levels can improve overall margins while
+                maintaining competitive pricing.
             </p>
-
         </div>
 
-
         <div class="insight">
-
             <h3>Customer Retention</h3>
-
             <p>
-                Approximately $445.8K of revenue was identified
-                as being at risk, highlighting the importance of
-                targeted retention campaigns.
+                RFM analysis identifies valuable and at-risk customer segments,
+                creating opportunities for targeted retention campaigns.
             </p>
+        </div>
 
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- SALES & PROFITABILITY -->
+<!-- ========================================================= -->
+
+<section id="sales" class="page">
+
+    <div class="page-title">
+        <h2>Sales & Profitability</h2>
+        <p>
+            Analyze revenue trends, profitability and the impact of discounts.
+        </p>
+    </div>
+
+
+    <div class="chart-grid">
+
+        <div class="chart-card full">
+            <h3>Monthly Sales & Profit Trend</h3>
+
+            <img
+                src="dashboard_images/01_monthly_sales_profit_trend.png"
+                alt="Monthly Sales Profit Trend">
         </div>
 
 
-        <div class="insight">
+        <div class="chart-card">
+            <h3>Discount Impact on Margins</h3>
 
-            <h3>Furniture Rationalization</h3>
-
-            <p>
-                Tables and Bookcases generated approximately
-                $21.2K in losses, indicating an opportunity for
-                product and SKU-level optimization.
-            </p>
-
+            <img
+                src="dashboard_images/05_discount_impact_on_margins.png"
+                alt="Discount Impact on Margins">
         </div>
 
 
-        <div class="insight">
+        <div class="chart-card">
+            <h3>Subcategory Profitability</h3>
 
+            <img
+                src="dashboard_images/03_subcategory_profitability.png"
+                alt="Subcategory Profitability">
+        </div>
+
+    </div>
+
+
+    <div class="insight-grid">
+
+        <div class="insight">
+            <h3>Profitability Opportunity</h3>
+            <p>
+                Discount optimization can reduce unnecessary margin erosion
+                and improve the profitability of promotional sales.
+            </p>
+        </div>
+
+        <div class="insight">
+            <h3>Loss-Making Categories</h3>
+            <p>
+                Subcategory profitability analysis helps identify products
+                generating high sales but weak or negative profit.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- PRODUCTS -->
+<!-- ========================================================= -->
+
+<section id="products" class="page">
+
+    <div class="page-title">
+        <h2>Product & Category Performance</h2>
+        <p>
+            Identify the products and categories driving revenue and profit.
+        </p>
+    </div>
+
+
+    <div class="chart-grid">
+
+        <div class="chart-card">
+            <h3>Category Performance</h3>
+
+            <img
+                src="dashboard_images/02_category_performance.png"
+                alt="Category Performance">
+        </div>
+
+
+        <div class="chart-card">
+            <h3>Subcategory Profitability</h3>
+
+            <img
+                src="dashboard_images/03_subcategory_profitability.png"
+                alt="Subcategory Profitability">
+        </div>
+
+
+        <div class="chart-card">
+            <h3>Top 10 Products by Sales</h3>
+
+            <img
+                src="dashboard_images/06_top10_products_sales.png"
+                alt="Top 10 Products by Sales">
+        </div>
+
+
+        <div class="chart-card">
+            <h3>Top 10 Customers by Sales</h3>
+
+            <img
+                src="dashboard_images/07_top10_customers.png"
+                alt="Top 10 Customers">
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- CUSTOMERS & RFM -->
+<!-- ========================================================= -->
+
+<section id="customers" class="page">
+
+    <div class="page-title">
+        <h2>Customer & RFM Analytics</h2>
+        <p>
+            Understand customer value, behavior and retention opportunities.
+        </p>
+    </div>
+
+
+    <div class="chart-grid">
+
+        <div class="chart-card">
+            <h3>RFM Customer Segments</h3>
+
+            <img
+                src="dashboard_images/07_rfm_customer_segments.png"
+                alt="RFM Customer Segments">
+        </div>
+
+
+        <div class="chart-card">
+            <h3>Customer Segment Revenue Contribution</h3>
+
+            <img
+                src="dashboard_images/08_customer_segment_revenue_contribution.png"
+                alt="Customer Segment Revenue Contribution">
+        </div>
+
+
+        <div class="chart-card">
+            <h3>RFM Customer Distribution</h3>
+
+            <img
+                src="dashboard_images/rfm/01_rfm_customer_distribution.png"
+                alt="RFM Customer Distribution">
+        </div>
+
+
+        <div class="chart-card">
+            <h3>RFM Revenue Contribution</h3>
+
+            <img
+                src="dashboard_images/rfm/02_rfm_revenue_contribution.png"
+                alt="RFM Revenue Contribution">
+        </div>
+
+
+        <div class="chart-card">
+            <h3>RFM Profit Contribution</h3>
+
+            <img
+                src="dashboard_images/rfm/03_rfm_profit_contribution.png"
+                alt="RFM Profit Contribution">
+        </div>
+
+
+        <div class="chart-card">
+            <h3>Recency vs Monetary</h3>
+
+            <img
+                src="dashboard_images/rfm/04_recency_vs_monetary_scatter.png"
+                alt="Recency vs Monetary">
+        </div>
+
+
+        <div class="chart-card">
+            <h3>Frequency vs Monetary</h3>
+
+            <img
+                src="dashboard_images/rfm/05_frequency_vs_monetary_scatter.png"
+                alt="Frequency vs Monetary">
+        </div>
+
+
+        <div class="chart-card">
+            <h3>Top 10 Customers by Sales</h3>
+
+            <img
+                src="dashboard_images/rfm/06_top10_customers_sales.png"
+                alt="Top 10 Customers by Sales">
+        </div>
+
+
+        <div class="chart-card">
+            <h3>Top 10 Customers by Profit</h3>
+
+            <img
+                src="dashboard_images/rfm/07_top10_customers_profit.png"
+                alt="Top 10 Customers by Profit">
+        </div>
+
+    </div>
+
+
+    <div class="insight-grid">
+
+        <div class="insight">
+            <h3>Customer Retention</h3>
+            <p>
+                RFM segmentation separates customers according to recency,
+                purchase frequency and monetary value, helping prioritize
+                retention strategies.
+            </p>
+        </div>
+
+        <div class="insight">
+            <h3>At-Risk Customers</h3>
+            <p>
+                Customers with declining activity can be targeted with
+                personalized offers and re-engagement campaigns.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- REGIONAL -->
+<!-- ========================================================= -->
+
+<section id="regional" class="page">
+
+    <div class="page-title">
+        <h2>Regional & Operational Analysis</h2>
+        <p>
+            Analyze geographical performance and identify regional opportunities.
+        </p>
+    </div>
+
+
+    <div class="chart-grid">
+
+        <div class="chart-card">
             <h3>Regional Performance</h3>
 
+            <img
+                src="dashboard_images/04_regional_performance.png"
+                alt="Regional Performance">
+        </div>
+
+
+        <div class="chart-card">
+            <h3>State Profitability Comparison</h3>
+
+            <img
+                src="dashboard_images/08_state_profitability_comparison.png"
+                alt="State Profitability Comparison">
+        </div>
+
+    </div>
+
+
+    <div class="insight-grid">
+
+        <div class="insight">
+            <h3>Regional Optimization</h3>
             <p>
-                Approximately $78.4K in losses were identified
-                across TX, OH, PA, IL and NC, creating an
-                opportunity for regional performance improvement.
+                Regional analysis highlights markets that generate strong
+                revenue as well as locations where profitability needs
+                improvement.
             </p>
-
         </div>
 
-    </div>
-
-
-    <!-- IMPACT -->
-    <div class="impact">
-
-        <p>Estimated Strategic Bottom-Line Opportunity</p>
-
-        <div class="impact-value">
-            $160K – $215K
-        </div>
-
-        <p>
-            Estimated impact from the combined discount,
-            customer retention, product and regional
-            recommendations.
-        </p>
-
-    </div>
-
-
-    <!-- TECHNOLOGY -->
-    <h2 class="section-title">Technology & Methodology</h2>
-
-    <div class="card">
-
-        <div class="tech">
-
-            <span>Python</span>
-            <span>Pandas</span>
-            <span>SQL</span>
-            <span>SQLite</span>
-            <span>Power BI</span>
-            <span>DAX</span>
-            <span>RFM Analysis</span>
-            <span>Star Schema</span>
-            <span>Data Modeling</span>
-            <span>Data Visualization</span>
-
-        </div>
-
-    </div>
-
-
-    <!-- PROJECT INFO -->
-    <h2 class="section-title">Project Implementation</h2>
-
-    <div class="dashboard-grid">
-
-        <div class="card">
-
-            <h3>Data & SQL</h3>
-
-            <p style="color:#5f6b7a; line-height:1.7;">
-                The project includes structured data preparation,
-                exploratory analysis and 25 business-focused SQL
-                queries covering customers, products, sales and
-                regional performance.
+        <div class="insight">
+            <h3>Strategic Opportunity</h3>
+            <p>
+                Regional performance can be used to optimize pricing,
+                inventory allocation, marketing investment and promotions.
             </p>
-
-        </div>
-
-
-        <div class="card">
-
-            <h3>Power BI & DAX</h3>
-
-            <p style="color:#5f6b7a; line-height:1.7;">
-                A Power BI analytical model was designed using a
-                star-schema approach with DAX measures and
-                dashboard visualizations for business reporting.
-            </p>
-
         </div>
 
     </div>
 
 
-    <!-- LINKS -->
-    <h2 class="section-title">Project Resources</h2>
+    <div class="chart-card">
 
-    <div class="buttons">
+        <h3>Technology & Methodology</h3>
 
-        <a href="https://github.com/Umathoram625/Ecommerce-Sales-Analytics"
-           target="_blank"
-           style="
-           display:inline-block;
-           background:#111827;
-           color:white;
-           padding:13px 20px;
-           border-radius:8px;
-           margin-right:10px;">
-           GitHub Repository
-        </a>
+        <div class="technology">
+
+            <span class="tag">Python</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">SQL</span>
+            <span class="tag">SQLite</span>
+            <span class="tag">Power BI</span>
+            <span class="tag">DAX</span>
+            <span class="tag">RFM Analysis</span>
+            <span class="tag">Data Cleaning</span>
+            <span class="tag">EDA</span>
+            <span class="tag">Data Modeling</span>
+            <span class="tag">Data Visualization</span>
+
+        </div>
 
     </div>
 
-</div>
+</section>
 
+</main>
+
+
+<!-- ================= FOOTER ================= -->
 
 <footer>
 
-    <p>
-        E-Commerce Sales Analytics Dashboard · Uma Thoram
-    </p>
-
-    <p style="margin-top:6px;">
-        Built with Python, SQL, Power BI, DAX and RFM Analysis
-    </p>
+    E-Commerce Sales Analytics |
+    Python • SQL • Power BI • RFM Analysis
 
 </footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    function showPage(pageId, button) {
+
+        // Hide every page
+        const pages = document.querySelectorAll(".page");
+
+        pages.forEach(function(page) {
+            page.classList.remove("active");
+        });
+
+
+        // Remove active navigation state
+        const buttons = document.querySelectorAll(".nav-btn");
+
+        buttons.forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+
+        // Show selected page
+        const selectedPage = document.getElementById(pageId);
+
+        if (selectedPage) {
+            selectedPage.classList.add("active");
+        }
+
+
+        // Highlight selected button
+        if (button) {
+            button.classList.add("active");
+        }
+
+
+        // Scroll to top
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+</script>
 
 </body>
 </html>
