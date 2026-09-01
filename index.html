@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>E-Commerce Sales Analytics | Uma Thoram</title>
+
+  <meta name="description"
+        content="E-Commerce Sales Analytics project using Python, Pandas, SQL, SQLite, Power BI, DAX, RFM segmentation and data-driven business insights.">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0b1120;
+      color: #e5e7eb;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: auto;
+    }
+
+    header {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      background:
+        radial-gradient(circle at 80% 20%, #1e3a5f 0, transparent 35%),
+        radial-gradient(circle at 20% 80%, #172554 0, transparent 35%),
+        #0b1120;
+    }
+
+    .hero {
+      padding: 80px 0;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 7px 14px;
+      border: 1px solid #334155;
+      border-radius: 30px;
+      color: #93c5fd;
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 76px);
+      line-height: 1.05;
+      max-width: 900px;
+      margin-bottom: 25px;
+    }
+
+    .hero p {
+      max-width: 760px;
+      color: #94a3b8;
+      font-size: 19px;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .button {
+      padding: 13px 22px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #111827;
+      transition: 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      border-color: #60a5fa;
+    }
+
+    .button.primary {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: white;
+    }
+
+    section {
+      padding: 75px 0;
+      border-top: 1px solid #1e293b;
+    }
+
+    h2 {
+      font-size: 34px;
+      margin-bottom: 15px;
+    }
+
+    .section-intro {
+      color: #94a3b8;
+      max-width: 750px;
+      margin-bottom: 35px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: #111827;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+      font-size: 19px;
+    }
+
+    .card p {
+      color: #94a3b8;
+      font-size: 15px;
+    }
+
+    .metric {
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #93c5fd;
+    }
+
+    .stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tech {
+      background: #172033;
+      border: 1px solid #334155;
+      padding: 9px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    .insights {
+      display: grid;
+      gap: 16px;
+    }
+
+    .insight {
+      padding: 22px;
+      border-left: 4px solid #3b82f6;
+      background: #111827;
+      border-radius: 8px;
+    }
+
+    .insight strong {
+      display: block;
+      font-size: 19px;
+      margin-bottom: 5px;
+    }
+
+    .insight span {
+      color: #94a3b8;
+    }
+
+    .highlight {
+      background: linear-gradient(135deg, #172554, #111827);
+      border: 1px solid #1e40af;
+      padding: 35px;
+      border-radius: 15px;
+      margin-top: 30px;
+    }
+
+    .highlight-number {
+      font-size: 44px;
+      font-weight: bold;
+      color: #93c5fd;
+      margin-bottom: 8px;
+    }
+
+    footer {
+      padding: 40px 0;
+      text-align: center;
+      color: #64748b;
+      border-top: 1px solid #1e293b;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 44px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container hero">
+
+    <div class="tag">Data Analytics Portfolio Project</div>
+
+    <h1>E-Commerce Sales Analytics Dashboard</h1>
+
+    <p>
+      An end-to-end analytics project transforming e-commerce sales data
+      into actionable business insights using Python, SQL, Power BI,
+      DAX, data modeling and RFM customer segmentation.
+    </p>
+
+    <div class="buttons">
+      <a class="button primary" href="#project">Explore Project</a>
+      <a class="button" href="README.md">View Documentation</a>
+    </div>
+
+  </div>
+</header>
+
+
+<section id="project">
+  <div class="container">
+
+    <h2>Project Overview</h2>
+
+    <p class="section-intro">
+      The project analyzes e-commerce sales, customers, products,
+      geography and shipping data through a structured analytics
+      workflow covering data preparation, exploratory analysis,
+      SQL analysis, customer segmentation and Power BI reporting.
+    </p>
+
+    <div class="grid">
+
+      <div class="card">
+        <div class="metric">25</div>
+        <h3>SQL Queries</h3>
+        <p>
+          Business-focused SQL analysis covering sales,
+          customers, products and regional performance.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="metric">28</div>
+        <h3>DAX Measures</h3>
+        <p>
+          KPI and analytical measures designed for Power BI reporting.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="metric">3</div>
+        <h3>Jupyter Notebooks</h3>
+        <p>
+          Data cleaning, statistical EDA and RFM customer modeling.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="metric">15</div>
+        <h3>Visualizations</h3>
+        <p>
+          High-resolution dashboard visualizations prepared for
+          business reporting.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section>
+  <div class="container">
+
+    <h2>Technology Stack</h2>
+
+    <p class="section-intro">
+      Technologies and analytical techniques used throughout the project.
+    </p>
+
+    <div class="stack">
+      <span class="tech">Python</span>
+      <span class="tech">Pandas</span>
+      <span class="tech">SQL</span>
+      <span class="tech">SQLite</span>
+      <span class="tech">Power BI</span>
+      <span class="tech">DAX</span>
+      <span class="tech">RFM Analysis</span>
+      <span class="tech">Data Modeling</span>
+      <span class="tech">Data Visualization</span>
+      <span class="tech">Statistical EDA</span>
+    </div>
+
+  </div>
+</section>
+
+
+<section>
+  <div class="container">
+
+    <h2>Analytics Workflow</h2>
+
+    <div class="grid">
+
+      <div class="card">
+        <h3>01 · Data Preparation</h3>
+        <p>
+          Cleaned and structured the source data into analytical
+          datasets suitable for downstream analysis.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>02 · SQL Analysis</h3>
+        <p>
+          Built business queries to investigate sales,
+          products, customers and geographic performance.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>03 · RFM Segmentation</h3>
+        <p>
+          Segmented customers using Recency, Frequency and
+          Monetary behavior to identify retention opportunities.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>04 · Power BI</h3>
+        <p>
+          Designed a star-schema analytical model and
+          DAX-powered reporting framework for decision making.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<section>
+  <div class="container">
+
+    <h2>Key Business Insights</h2>
+
+    <p class="section-intro">
+      The following recommendations are based on the validated
+      analysis completed in the project.
+    </p>
+
+    <div class="insights">
+
+      <div class="insight">
+        <strong>Discount Optimization</strong>
+        <span>
+          Analysis identified approximately $156.1K lost from
+          discounts above 20%, supporting a hard-cap discount strategy.
+        </span>
+      </div>
+
+      <div class="insight">
+        <strong>Furniture Rationalization</strong>
+        <span>
+          Tables and Bookcases showed approximately $21.2K in losses,
+          supporting SKU and product-bundle optimization.
+        </span>
+      </div>
+
+      <div class="insight">
+        <strong>Customer Retention</strong>
+        <span>
+          Approximately $445.8K of revenue was identified as being
+          at risk from customers likely to lapse.
+        </span>
+      </div>
+
+      <div class="insight">
+        <strong>Regional Performance</strong>
+        <span>
+          Approximately $78.4K in losses were identified across
+          TX, OH, PA, IL and NC, highlighting regional optimization opportunities.
+        </span>
+      </div>
+
+    </div>
+
+    <div class="highlight">
+      <div class="highlight-number">$160K–$215K</div>
+      <p>
+        Estimated total bottom-line uplift from the combined
+        discount, product, customer-retention and regional
+        recommendations.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<section>
+  <div class="container">
+
+    <h2>Project Resources</h2>
+
+    <p class="section-intro">
+      Explore the documentation and supporting project artifacts.
+    </p>
+
+    <div class="buttons">
+
+      <a class="button primary" href="README.md">
+        Project README
+      </a>
+
+      <a class="button" href="reports/">
+        Reports
+      </a>
+
+      <a class="button" href="notebooks/">
+        Notebooks
+      </a>
+
+      <a class="button" href="sql/">
+        SQL Analysis
+      </a>
+
+      <a class="button" href="dashboard_images/">
+        Dashboard Images
+      </a>
+
+    </div>
+
+  </div>
+</section>
+
+
+<footer>
+  <div class="container">
+    <p>E-Commerce Sales Analytics · Uma Thoram</p>
+    <p>Python · SQL · Power BI · DAX · RFM</p>
+  </div>
+</footer>
+
+</body>
+</html>
