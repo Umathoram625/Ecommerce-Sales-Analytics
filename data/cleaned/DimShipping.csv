@@ -1,0 +1,5 @@
+ship_mode_id,ship_mode,sla_target_days,delivery_tier
+1,Same Day,1,Express Same Day
+2,First Class,2,Expedited Air
+3,Second Class,3,Priority Ground
+4,Standard Class,6,Standard Freight

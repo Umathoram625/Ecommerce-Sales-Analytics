@@ -1,0 +1,5 @@
+region,total_orders,units_sold,total_sales,total_profit,profit_margin_pct,profit_rank
+West,1611,12266,725457.82,108418.45,14.94,1
+East,1401,10618,678781.24,91522.78,13.48,2
+South,822,6209,391721.91,46749.43,11.93,3
+Central,1175,8780,501239.89,39706.36,7.92,4

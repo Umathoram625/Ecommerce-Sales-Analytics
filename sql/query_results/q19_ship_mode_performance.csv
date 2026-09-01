@@ -1,0 +1,5 @@
+ship_mode,total_orders,avg_shipping_days,min_shipping_days,max_shipping_days,total_sales,total_profit,profit_margin_pct
+Same Day,264,0.04,0,1,128363.13,15891.76,12.38
+First Class,787,2.18,1,4,351428.42,48969.84,13.93
+Second Class,964,3.24,1,5,459193.57,57446.64,12.51
+Standard Class,2994,5.01,3,7,1358215.74,164088.79,12.08

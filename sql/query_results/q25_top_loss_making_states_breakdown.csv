@@ -1,0 +1,11 @@
+state,region,total_orders,total_sales,net_profit_loss,profit_margin_pct,avg_discount_pct
+Texas,Central,487,170188.05,-25729.36,-15.12,37.02
+Ohio,East,236,78258.14,-16971.38,-21.69,32.49
+Pennsylvania,East,288,116511.91,-15559.96,-13.35,32.86
+Illinois,Central,276,80166.1,-12607.89,-15.73,39.0
+North Carolina,South,136,55603.16,-7490.91,-13.47,28.35
+Colorado,West,79,32108.12,-6527.86,-20.33,31.65
+Tennessee,South,91,30661.87,-5341.69,-17.42,29.13
+Arizona,West,108,35282.0,-3427.92,-9.72,30.36
+Florida,South,200,89473.71,-3399.3,-3.8,29.93
+Oregon,West,56,17431.15,-1190.47,-6.83,28.87
